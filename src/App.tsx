@@ -75,8 +75,8 @@ const App: React.FC = () => {
 
   return (
     <Root>
-      <Header />
       <Stack spacing={5}>
+        <Header />
         <div>
           <h2>How long have I been here</h2>
           <LocalizationProvider dateAdapter={DateAdapter}>
