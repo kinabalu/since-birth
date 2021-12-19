@@ -1,4 +1,6 @@
 import * as React from 'react'
+
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Stack, styled } from '@mui/material'
 import { RadioGroup } from '@mui/material'
 import { FormControl, FormControlLabel, FormLabel } from '@mui/material'
@@ -11,16 +13,39 @@ import DateTimePicker from '@mui/lab/DateTimePicker'
 import Header from '@/header'
 import dayjs from 'dayjs'
 import numeral from 'numeral'
+import useInterval from './hooks'
 
 const App: React.FC = () => {
   const [value, setValue] = React.useState<Date | null>(new Date())
+  const [now, setNow] = React.useState<Date | null>(new Date())
   const [timeSince, setTimeSince] = React.useState<number | null>(null)
 
   const [unit, setUnit] = React.useState<string>('minute')
 
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  useInterval(() => {
+    setNow(new Date())
+  }, 1000)
+
+  React.useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const paramUnit = params.get('unit')
+
+    if (params.get('timestamp')) {
+      setValue(dayjs(params.get('timestamp')).toDate())
+    }
+    if (paramUnit) {
+      setUnit(paramUnit)
+    }
+    // eslint-disable-next-line
+  }, [])
+
   const handleChange = (newValue: Date | null) => {
     if (newValue) {
       setValue(newValue)
+      navigate(`/?unit=${unit}&timestamp=${dayjs(newValue).toISOString()}`, { replace: true })
     }
   }
 
@@ -35,6 +60,7 @@ const App: React.FC = () => {
 
   const handleUnitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUnit(event.target.value)
+    navigate(`/?unit=${event.target.value}&timestamp=${dayjs(value).toISOString()}`, { replace: true })
   }
 
   React.useEffect(() => {
@@ -45,7 +71,7 @@ const App: React.FC = () => {
     } else if (unit === 'second') {
       setTimeSince(now.diff(dayjs(value), 'second'))
     }
-  }, [value, unit])
+  }, [value, now, unit])
 
   return (
     <Root>

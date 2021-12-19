@@ -1,14 +1,18 @@
 import { StrictMode } from 'react'
-import ReactDOM from 'react-dom'
-
+import { render } from 'react-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ChosenThemeProvider, ThemeProvider } from '@/providers'
 import App from './App'
 
-ReactDOM.render(
+render(
   <StrictMode>
     <ChosenThemeProvider>
       <ThemeProvider>
-        <App />
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<App />} />
+          </Routes>
+        </BrowserRouter>
       </ThemeProvider>
     </ChosenThemeProvider>
   </StrictMode>,

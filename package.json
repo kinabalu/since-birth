@@ -19,9 +19,11 @@
     "@mui/lab": "^5.0.0-alpha.60",
     "@mui/material": "^5.0.1",
     "dayjs": "^1.10.7",
+    "history": "5",
     "numeral": "^2.0.6",
     "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "react-dom": "^17.0.0",
+    "react-router-dom": "6"
   },
   "devDependencies": {
     "@types/node": "^14.14.31",
